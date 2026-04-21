@@ -46,6 +46,7 @@ O aplicativo utiliza uma lógica resiliente e progressiva para carregar os dados
 
 - **Menu Principal (Home App):** 
   - Listagem da biblioteca de receitas do usuário, busca visual via texto, botão fixo estilo Material Design para nova receita. 
+  - O design incorpora funcionalidade de Imagem de Capa, permitindo cadastrar na edição do item (ou via MD) uma URL de imagem que é centralizada perfeitamente; com fallback nativo inteligente para renderizar apenas o Emoji caso a imagem não exista.
   - Menu Dropdown para Exportar Arquivos MD, Importar arquivo MD local, ou Sincronizar via fetch com Servidor.
 - **Tela de Detalhes:** 
   - Abas (Tabs) persistentes (Ingredientes e Modo de preparo).
@@ -73,4 +74,5 @@ O aplicativo utiliza uma lógica resiliente e progressiva para carregar os dados
 ### Manipulação do `receitas.md`
 - Este arquivo usa um formato *parser* não-trivial no JS. Segue regramento exigente: 
   - O formato exige cabeçalhos nível 2 como "## [EMOJI_SE_EXISTIR] NOME_DA_RECEITA".
+  - (Opcional) A URL da imagem de capa, se existir, é lida e escrita baseada na primeira marcação de imagem markdown válida logo após o título principal da receita, no formato clássico: `![Capa](https://...)`
   - Seções marcadas obrigatoriamente como "### Ingredientes" (Usa listas de Markdown `- xxxx`) e "### Passos" (Usam `1. xxxxx`). Alterar bruscamente palavras-chave neste MD, quebrará o app durante a leitura (Parser: `parseMarkdownRecipes(md)`).

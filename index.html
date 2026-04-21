@@ -120,6 +120,15 @@
             margin-bottom: 12px;
         }
 
+        .recipe-thumb {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            background: #f0f0f0;
+        }
+
         .recipe-name {
             font-size: 16px;
             font-weight: 600;
@@ -1167,9 +1176,13 @@
                     ? `<div class="checked-indicator ${isAllDone ? 'all-done' : ''}">${checkedCount}/${total} ✓</div>` 
                     : ``;
 
+                const visualMedia = r.imagem 
+                    ? `<img src="${escapeAttr(r.imagem)}" class="recipe-thumb" alt="${escapeAttr(r.nome)}" onerror="this.outerHTML='<div class=\\'emoji-big\\'>${r.emoji}</div>'">`
+                    : `<div class="emoji-big">${r.emoji}</div>`;
+
                 return `
                     <div class="recipe-card" onclick="openRecipe('${r.id}')">
-                        <div class="emoji-big">${r.emoji}</div>
+                        ${visualMedia}
                         <div class="recipe-name">${r.nome}</div>
                         ${statusBadge}
                     </div>
@@ -1457,6 +1470,7 @@
 
             let emoji = "🍽️";
             let nome = "";
+            let imagem = "";
             let ingredientes = [""];
             let passos = [""];
 
@@ -1465,24 +1479,28 @@
                 if (r) {
                     emoji = r.emoji;
                     nome = r.nome;
+                    imagem = r.imagem || "";
                     ingredientes = r.ingredientes.length > 0 ? [...r.ingredientes] : [""];
                     passos = r.passos.length > 0 ? [...r.passos] : [""];
                 }
             }
 
             // Store snapshot for dirty check
-            editOriginalSnapshot = JSON.stringify({ emoji, nome, ingredientes, passos });
+            editOriginalSnapshot = JSON.stringify({ emoji, nome, imagem, ingredientes, passos });
 
-            renderEditForm(emoji, nome, ingredientes, passos, !isNew);
+            renderEditForm(emoji, nome, imagem, ingredientes, passos, !isNew);
         }
 
-        function renderEditForm(emoji, nome, ingredientes, passos, showDelete) {
+        function renderEditForm(emoji, nome, imagem, ingredientes, passos, showDelete) {
             const body = document.getElementById("edit-body");
 
             let html = `
                 <div class="edit-row-emoji-name">
                     <input type="text" class="edit-emoji-input" id="edit-emoji" value="${escapeAttr(emoji)}" maxlength="2">
                     <input type="text" class="edit-name-input" id="edit-nome" placeholder="Nome da receita" value="${escapeAttr(nome)}">
+                </div>
+                <div style="margin-bottom: 24px;">
+                    <input type="url" class="edit-name-input" id="edit-imagem" placeholder="URL da Imagem de Capa (opcional)" value="${escapeAttr(imagem)}">
                 </div>
 
                 <div class="edit-section-title">🛒 Ingredientes</div>
@@ -1550,6 +1568,7 @@
         function getEditFormData() {
             const emoji = document.getElementById("edit-emoji").value.trim() || "🍽️";
             const nome = document.getElementById("edit-nome").value.trim();
+            const imagem = (document.getElementById("edit-imagem")?.value || "").trim();
             
             const ingItems = document.querySelectorAll('#edit-ingredientes-list .edit-list-item input[type="text"]');
             const ingredientes = [];
@@ -1565,13 +1584,14 @@
                 if (v) passos.push(v);
             });
 
-            return { emoji, nome, ingredientes, passos };
+            return { emoji, nome, imagem, ingredientes, passos };
         }
 
         function getCurrentEditValues() {
             // Get all values including empty ones for dirty check
             const emoji = (document.getElementById("edit-emoji")?.value || "").trim();
             const nome = (document.getElementById("edit-nome")?.value || "").trim();
+            const imagem = (document.getElementById("edit-imagem")?.value || "").trim();
             
             const ingItems = document.querySelectorAll('#edit-ingredientes-list .edit-list-item input[type="text"]');
             const ingredientes = [];
@@ -1581,7 +1601,7 @@
             const passos = [];
             stepItems.forEach(ta => passos.push(ta.value));
 
-            return JSON.stringify({ emoji: emoji || "🍽️", nome, ingredientes, passos });
+            return JSON.stringify({ emoji: emoji || "🍽️", nome, imagem, ingredientes, passos });
         }
 
         // --- Adding items ---
@@ -1673,6 +1693,7 @@
                 if (idx !== -1) {
                     receitas[idx].emoji = data.emoji;
                     receitas[idx].nome = data.nome;
+                    receitas[idx].imagem = data.imagem;
                     receitas[idx].ingredientes = data.ingredientes;
                     receitas[idx].passos = data.passos;
                 }
@@ -1689,6 +1710,7 @@
                     id: generateId(),
                     emoji: data.emoji,
                     nome: data.nome,
+                    imagem: data.imagem,
                     ingredientes: data.ingredientes,
                     passos: data.passos
                 };
@@ -1751,6 +1773,9 @@
             receitas.forEach(r => {
                 md += "\n---\n\n";
                 md += `## ${r.emoji} ${r.nome}\n\n`;
+                if (r.imagem) {
+                    md += `![Capa](${r.imagem})\n\n`;
+                }
                 md += `### Ingredientes\n\n`;
                 r.ingredientes.forEach(ing => {
                     md += `- ${ing}\n`;
@@ -1850,11 +1875,21 @@
                         id: generateId(),
                         emoji: emoji,
                         nome: nome,
+                        imagem: "",
                         ingredientes: [],
                         passos: []
                     };
                     section = null;
                     continue;
+                }
+
+                // Detect Image URL
+                if (!section && currentRecipe) {
+                    const imgMatch = trimmed.match(/^!\[.*?\]\((.+?)\)$/);
+                    if (imgMatch) {
+                        currentRecipe.imagem = imgMatch[1];
+                        continue;
+                    }
                 }
 
                 // Detect section headers
