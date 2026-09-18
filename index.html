@@ -15,6 +15,9 @@
             --gray-text: #666666;
             --success: #28a745;
             --check-bg: #fcebdc;
+            --surface: #FFFFFF;
+            --border: #EDE3D8;
+            --muted: #7A6E60;
         }
 
         * {
@@ -44,13 +47,13 @@
         }
 
         .home-header {
-            background: var(--primary);
+            background: var(--surface);
             padding: 24px 20px;
-            color: white;
+            color: var(--text);
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(45,27,0,0.06);
             position: relative;
         }
 
@@ -61,17 +64,17 @@
 
         .home-header p {
             font-size: 16px;
-            opacity: 0.9;
+            color: var(--muted);
         }
 
         .search-container {
-            background: white;
+            background: var(--bg);
+            border: 1px solid var(--border);
             border-radius: 24px;
             display: flex;
             align-items: center;
             padding: 10px 16px;
             margin-top: 16px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
         }
 
         .search-container span {
@@ -155,27 +158,28 @@
             display: none;
             flex-direction: column;
             height: 100vh;
+            height: 100dvh;
             overflow: hidden;
             background: var(--bg);
         }
 
         .detail-header {
-            background: var(--primary);
-            color: white;
+            background: var(--surface);
+            color: var(--text);
             display: flex;
             align-items: center;
             padding: 16px;
             font-size: 20px;
             font-weight: bold;
             flex-shrink: 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-bottom: 1px solid var(--border);
             z-index: 20;
         }
 
         .back-btn {
             background: none;
             border: none;
-            color: white;
+            color: var(--text);
             font-size: 26px;
             margin-right: 16px;
             cursor: pointer;
@@ -213,7 +217,6 @@
         .tab-btn.active {
             color: var(--primary);
             border-bottom: 3px solid var(--primary);
-            background: #fffafa;
         }
 
         .tab-content-container {
@@ -226,7 +229,7 @@
             display: none;
             animation: fadeIn 0.3s ease-in-out;
             padding: 20px 16px;
-            padding-bottom: 130px; /* Space for sticky footer */
+            padding-bottom: 32px;
         }
         
         .tab-content.active {
@@ -236,6 +239,52 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- COVER IMAGE --- */
+        .detail-hero {
+            display: block;
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: var(--border);
+        }
+        .detail-hero[hidden] {
+            display: none;
+        }
+
+        /* --- PROGRESS --- */
+        .detail-progress {
+            flex-shrink: 0;
+            padding: 10px 16px 12px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            z-index: 14;
+        }
+        .progress-label {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .progress-track {
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background: var(--primary);
+            border-radius: 3px;
+            transition: width 0.3s, background 0.3s;
+        }
+        .detail-progress.done .progress-fill {
+            background: var(--success);
+        }
+        .detail-progress.done .progress-label {
+            color: #155724;
         }
 
         /* --- CHECKLIST ITEMS --- */
@@ -306,9 +355,9 @@
         .btn-reiniciar {
             width: 100%;
             margin-top: 32px;
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            color: var(--muted);
             font-weight: bold;
             font-size: 18px;
             min-height: 54px;
@@ -317,12 +366,10 @@
         }
 
         .fixed-footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 20px 16px 24px 16px;
-            background: linear-gradient(transparent, var(--bg) 25%);
+            flex-shrink: 0;
+            padding: 12px 16px calc(16px + env(safe-area-inset-bottom)) 16px;
+            background: var(--bg);
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.06);
             text-align: center;
             z-index: 30;
         }
@@ -360,7 +407,7 @@
         #timer-display {
             font-size: 3.5rem;
             font-weight: bold;
-            color: var(--primary);
+            color: var(--text);
             font-variant-numeric: tabular-nums;
             letter-spacing: -1px;
             line-height: 1;
@@ -414,9 +461,9 @@
             min-height: 40px;
             padding: 0 16px;
             border-radius: 20px;
-            background: #FFEDDF;
-            color: var(--secondary);
-            border: 1px solid rgba(232,114,12,0.3);
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
             font-size: 15px;
             font-weight: bold;
             white-space: nowrap;
@@ -425,6 +472,7 @@
         }
         .preset-btn:active {
             background: var(--primary);
+            border-color: var(--primary);
             color: white;
         }
 
@@ -440,12 +488,37 @@
             position: fixed;
             z-index: 1000;
             left: 50%;
-            bottom: 40px;
+            bottom: 104px;
             font-size: 16px;
             font-weight: bold;
             transform: translateX(-50%);
             opacity: 0;
             transition: opacity 0.3s, transform 0.3s;
+        }
+
+        #toast-action {
+            display: none;
+            background: none;
+            border: none;
+            color: #FFB066;
+            font-size: 16px;
+            font-weight: bold;
+            margin-left: 16px;
+            padding: 4px 0;
+            cursor: pointer;
+        }
+        #toast.has-action {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-width: 300px;
+            text-align: left;
+        }
+        #toast-msg {
+            white-space: nowrap;
+        }
+        #toast.has-action #toast-action {
+            display: inline-block;
         }
 
         #toast.show {
@@ -484,7 +557,7 @@
         .menu-dots-btn {
             background: none;
             border: none;
-            color: white;
+            color: var(--text);
             font-size: 24px;
             cursor: pointer;
             min-width: 48px;
@@ -541,8 +614,8 @@
         /* --- EDIT BUTTON (Detail Header) --- */
         .edit-btn {
             background: transparent;
-            border: 1.5px solid rgba(255,255,255,0.5);
-            color: white;
+            border: 1.5px solid var(--border);
+            color: var(--text);
             font-size: 20px;
             cursor: pointer;
             min-width: 48px;
@@ -556,7 +629,7 @@
             transition: background 0.15s;
         }
         .edit-btn:active {
-            background: rgba(255,255,255,0.15);
+            background: var(--bg);
         }
 
         /* --- EDIT SCREEN --- */
@@ -564,20 +637,21 @@
             display: none;
             flex-direction: column;
             height: 100vh;
+            height: 100dvh;
             overflow: hidden;
             background: var(--bg);
         }
 
         .edit-header {
-            background: var(--primary);
-            color: white;
+            background: var(--surface);
+            color: var(--text);
             display: flex;
             align-items: center;
             padding: 16px;
             font-size: 20px;
             font-weight: bold;
             flex-shrink: 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-bottom: 1px solid var(--border);
             z-index: 20;
             gap: 8px;
         }
@@ -590,13 +664,14 @@
         }
 
         .save-btn {
-            background: none;
+            background: var(--primary);
             border: none;
+            border-radius: 22px;
             color: white;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            min-height: 48px;
+            min-height: 44px;
             min-width: 48px;
             display: flex;
             align-items: center;
@@ -604,7 +679,7 @@
             gap: 4px;
             flex-shrink: 0;
             white-space: nowrap;
-            padding: 0 4px;
+            padding: 0 16px;
         }
 
         .edit-body {
@@ -651,6 +726,9 @@
         }
 
         .edit-section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 12px;
@@ -665,7 +743,6 @@
             margin-bottom: 10px;
         }
 
-        .edit-list-item input[type="text"],
         .edit-list-item textarea {
             flex-grow: 1;
             font-size: 17px;
@@ -677,7 +754,6 @@
             width: 100%;
             font-family: inherit;
         }
-        .edit-list-item input[type="text"]:focus,
         .edit-list-item textarea:focus {
             border-color: var(--primary);
         }
@@ -712,13 +788,33 @@
             min-height: 36px;
             font-size: 16px;
             cursor: pointer;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
         }
         .btn-move-item:active {
             background: #ccc;
+        }
+        .reordering .btn-move-item {
+            display: flex;
+        }
+
+        .btn-reorder {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 600;
+            padding: 0 12px;
+            min-height: 32px;
+            cursor: pointer;
+        }
+        .btn-reorder.active {
+            background: var(--text);
+            border-color: var(--text);
+            color: white;
         }
 
         .btn-add-item {
@@ -729,9 +825,9 @@
             width: 100%;
             padding: 12px;
             background: transparent;
-            border: 2px dashed var(--primary);
+            border: 2px dashed var(--border);
             border-radius: 10px;
-            color: var(--primary);
+            color: var(--secondary);
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -744,9 +840,9 @@
         }
 
         .btn-delete-recipe {
-            background: #dc3545;
-            color: white;
-            border: none;
+            background: transparent;
+            color: #c0392b;
+            border: 1.5px solid #e8b4ae;
             border-radius: 28px;
             width: 100%;
             min-height: 54px;
@@ -808,9 +904,17 @@
             <button id="tab-ingredients" class="tab-btn active" onclick="switchTab('ingredients')">🛒 Ingredientes</button>
             <button id="tab-steps" class="tab-btn" onclick="switchTab('steps')">👨‍🍳 Modo de Fazer</button>
         </div>
-        
+
+        <!-- Progresso da aba atual -->
+        <div class="detail-progress" id="detail-progress">
+            <div class="progress-label" id="progress-label"></div>
+            <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        </div>
+
         <!-- Scrollable Content -->
         <div class="tab-content-container" id="scroll-container">
+            <!-- Imagem de capa (oculta quando a receita não tem imagem) -->
+            <img id="detail-hero" class="detail-hero" alt="" hidden onerror="this.hidden = true">
             <!-- TAB INGREDIENTES -->
             <div id="content-ingredients" class="tab-content active">
                 <div id="ingredients-list"></div>
@@ -843,11 +947,11 @@
                 <div id="steps-list"></div>
                 <button class="btn-reiniciar" onclick="clearChecks('steps')">Reiniciar receita</button>
             </div>
-            
-            <!-- Floating Footer - Copiar -->
-            <div class="fixed-footer" id="btn-copy-container">
-                <button class="btn-copy" onclick="copyToClipboard()">📋 Copiar lista de compras</button>
-            </div>
+        </div>
+
+        <!-- Footer - Copiar (fora da área rolável, fica sempre no rodapé) -->
+        <div class="fixed-footer" id="btn-copy-container">
+            <button class="btn-copy" onclick="copyToClipboard()">📋 Copiar lista de compras</button>
         </div>
     </div>
 
@@ -867,7 +971,7 @@
     <input type="file" id="import-file-input" accept=".md,.txt" style="display:none;">
 
     <!-- TOAST -->
-    <div id="toast">✅ Copiado!</div>
+    <div id="toast"><span id="toast-msg">✅ Copiado!</span><button id="toast-action" onclick="runToastAction()"></button></div>
 
     <!-- SCRIPT -->
     <script>
@@ -1141,6 +1245,7 @@
             checks[index] = isChecked;
             localStorage.setItem(`recipe_${recipeId}_${type}`, JSON.stringify(checks));
             renderHomeGrid(); // update ticks silently
+            updateProgress();
         }
 
         function clearChecksState(recipeId, type) {
@@ -1213,6 +1318,17 @@
             const r = getRecipe(id);
             if (!r) return;
             document.getElementById("detail-title").innerText = `${r.emoji} ${r.nome}`;
+
+            // Cover image
+            const hero = document.getElementById("detail-hero");
+            if (r.imagem) {
+                hero.hidden = false;
+                hero.alt = r.nome;
+                hero.src = r.imagem;
+            } else {
+                hero.hidden = true;
+                hero.removeAttribute("src");
+            }
             
             // Render Ingredients
             const checksIng = getChecks(id, "ingredients");
@@ -1234,6 +1350,28 @@
                     </div>
                 </div>
             `).join("");
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const r = getRecipe(activeRecipeId);
+            if (!r) return;
+            const isIng = currentTab === "ingredients";
+            const items = isIng ? r.ingredientes : r.passos;
+            const checks = getChecks(activeRecipeId, currentTab);
+            const total = items.length;
+            let done = 0;
+            for (let i = 0; i < total; i++) { if (checks[i]) done++; }
+            const allDone = total > 0 && done === total;
+
+            let label;
+            if (isIng) label = allDone ? "✓ Todos os ingredientes separados" : `${done} de ${total} ingredientes`;
+            else label = allDone ? "✓ Receita concluída!" : `${done} de ${total} passos concluídos`;
+
+            document.getElementById("progress-label").innerText = label;
+            document.getElementById("progress-fill").style.width = (total ? (done / total) * 100 : 0) + "%";
+            document.getElementById("detail-progress").classList.toggle("done", allDone);
         }
 
         // =============================================
@@ -1256,6 +1394,7 @@
             resetTimer(); 
             // Reset scroll
             document.getElementById("scroll-container").scrollTop = 0;
+            syncWakeLock();
         }
 
         function goHome() {
@@ -1264,6 +1403,7 @@
             document.getElementById("edit-screen").style.display = "none";
             document.getElementById("home-screen").style.display = "block";
             renderHomeGrid();
+            syncWakeLock();
         }
 
         function switchTab(tab) {
@@ -1284,13 +1424,51 @@
                 document.getElementById("tab-steps").classList.add("active");
                 document.getElementById("content-steps").classList.add("active");
             }
+            updateProgress();
         }
 
         function clearChecks(type) {
-            if (confirm("Tem certeza que deseja desmarcar tudo?")) {
-                clearChecksState(activeRecipeId, type);
+            const id = activeRecipeId;
+            const key = `recipe_${id}_${type}`;
+            const previous = localStorage.getItem(key);
+            if (!previous || !Object.values(JSON.parse(previous)).some(Boolean)) {
+                showToast("Nada marcado ainda.");
+                return;
+            }
+            clearChecksState(id, type);
+            showToast(type === "steps" ? "Receita reiniciada" : "Tudo desmarcado", 5000, {
+                label: "Desfazer",
+                fn: () => {
+                    localStorage.setItem(key, previous);
+                    if (activeRecipeId === id) renderRecipeDetail(id);
+                    renderHomeGrid();
+                }
+            });
+        }
+
+        // =============================================
+        // WAKE LOCK — tela acesa enquanto a receita está aberta
+        // =============================================
+        let wakeLock = null;
+
+        async function syncWakeLock() {
+            const wanted = document.getElementById("detail-screen").style.display === "flex"
+                && document.visibilityState === "visible";
+            try {
+                if (wanted && !wakeLock && "wakeLock" in navigator) {
+                    wakeLock = await navigator.wakeLock.request("screen");
+                    wakeLock.addEventListener("release", () => { wakeLock = null; });
+                } else if (!wanted && wakeLock) {
+                    await wakeLock.release();
+                    wakeLock = null;
+                }
+            } catch (e) {
+                wakeLock = null; // unsupported, denied or insecure context
             }
         }
+
+        // The browser drops the lock when the tab is hidden; take it back on return
+        document.addEventListener("visibilitychange", syncWakeLock);
 
         // =============================================
         // CLIPBOARD
@@ -1326,13 +1504,29 @@
             showToast("✅ Copiado!");
         }
 
-        function showToast(msg, duration) {
+        let toastTimer = null;
+        let toastAction = null;
+
+        function showToast(msg, duration, action) {
             const toast = document.getElementById("toast");
-            toast.innerText = msg;
+            document.getElementById("toast-msg").innerText = msg;
+            document.getElementById("toast-action").innerText = action ? action.label : "";
+            toastAction = action ? action.fn : null;
+            toast.classList.toggle("has-action", !!action);
             toast.classList.add("show");
-            setTimeout(() => {
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
                 toast.classList.remove("show");
+                toastAction = null;
             }, duration || 2000);
+        }
+
+        function runToastAction() {
+            const fn = toastAction;
+            toastAction = null;
+            clearTimeout(toastTimer);
+            document.getElementById("toast").classList.remove("show");
+            if (fn) fn();
         }
 
         // =============================================
@@ -1382,7 +1576,7 @@
             const btnPlay = document.getElementById("btn-timer-play");
             if (timerState === "RUNNING") {
                 btnPlay.innerHTML = "⏸️ Pausar";
-                btnPlay.style.background = "#FF9800"; // different color for pause
+                btnPlay.style.background = "var(--secondary)";
             } else {
                 btnPlay.innerHTML = "▶️ Iniciar";
                 btnPlay.style.background = "var(--primary)";
@@ -1467,6 +1661,7 @@
             document.getElementById("detail-screen").style.display = "none";
             document.getElementById("edit-screen").style.display = "flex";
             document.getElementById("edit-header-title").innerText = isNew ? "Nova Receita" : "Editar Receita";
+            syncWakeLock();
 
             let emoji = "🍽️";
             let nome = "";
@@ -1503,13 +1698,13 @@
                     <input type="url" class="edit-name-input" id="edit-imagem" placeholder="URL da Imagem de Capa (opcional)" value="${escapeAttr(imagem)}">
                 </div>
 
-                <div class="edit-section-title">🛒 Ingredientes</div>
+                <div class="edit-section-title"><span>🛒 Ingredientes</span><button class="btn-reorder" onclick="toggleReorder(this, 'edit-ingredientes-list')">↕ Reordenar</button></div>
                 <div id="edit-ingredientes-list">
                     ${ingredientes.map((ing, i) => renderEditIngredientItem(ing, i, ingredientes.length)).join("")}
                 </div>
                 <button class="btn-add-item" onclick="addIngredient()">+ Adicionar ingrediente</button>
 
-                <div class="edit-section-title">👨‍🍳 Passos</div>
+                <div class="edit-section-title"><span>👨‍🍳 Passos</span><button class="btn-reorder" onclick="toggleReorder(this, 'edit-passos-list')">↕ Reordenar</button></div>
                 <div id="edit-passos-list">
                     ${passos.map((p, i) => renderEditStepItem(p, i, passos.length)).join("")}
                 </div>
@@ -1526,7 +1721,25 @@
             body.scrollTop = 0;
 
             // Auto-resize textareas
-            document.querySelectorAll('#edit-passos-list textarea').forEach(autoResize);
+            body.querySelectorAll('textarea').forEach(autoResize);
+        }
+
+        function toggleReorder(btn, listId) {
+            const list = document.getElementById(listId);
+            const on = list.classList.toggle("reordering");
+            btn.classList.toggle("active", on);
+            btn.innerText = on ? "✓ Pronto" : "↕ Reordenar";
+            list.querySelectorAll('textarea').forEach(autoResize); // width changed
+        }
+
+        // Enter in an ingredient creates the next one instead of a line break
+        function onIngredientKey(e, index) {
+            if (e.key !== "Enter" || e.shiftKey) return;
+            e.preventDefault();
+            const data = getEditFormDataRaw();
+            data.ingredientes.splice(index + 1, 0, "");
+            rerenderEditList('ingredientes', data.ingredientes);
+            document.querySelectorAll('#edit-ingredientes-list textarea')[index + 1].focus();
         }
 
         function renderEditIngredientItem(value, index, total) {
@@ -1534,7 +1747,7 @@
                 <div class="edit-list-item" data-type="ingrediente" data-index="${index}">
                     <button class="btn-move-item" onclick="moveItem('ingredientes', ${index}, -1)" ${index === 0 ? 'disabled style="opacity:0.3"' : ''}>↑</button>
                     <button class="btn-move-item" onclick="moveItem('ingredientes', ${index}, 1)" ${index === total - 1 ? 'disabled style="opacity:0.3"' : ''}>↓</button>
-                    <input type="text" value="${escapeAttr(value)}" placeholder="Ingrediente...">
+                    <textarea rows="1" placeholder="Ingrediente..." oninput="autoResize(this)" onkeydown="onIngredientKey(event, ${index})">${escapeHtml(value)}</textarea>
                     <button class="btn-remove-item" onclick="removeItem('ingredientes', ${index})">✕</button>
                 </div>
             `;
@@ -1570,10 +1783,10 @@
             const nome = document.getElementById("edit-nome").value.trim();
             const imagem = (document.getElementById("edit-imagem")?.value || "").trim();
             
-            const ingItems = document.querySelectorAll('#edit-ingredientes-list .edit-list-item input[type="text"]');
+            const ingItems = document.querySelectorAll('#edit-ingredientes-list .edit-list-item textarea');
             const ingredientes = [];
             ingItems.forEach(inp => {
-                const v = inp.value.trim();
+                const v = inp.value.replace(/\s*\n\s*/g, " ").trim();
                 if (v) ingredientes.push(v);
             });
 
@@ -1593,7 +1806,7 @@
             const nome = (document.getElementById("edit-nome")?.value || "").trim();
             const imagem = (document.getElementById("edit-imagem")?.value || "").trim();
             
-            const ingItems = document.querySelectorAll('#edit-ingredientes-list .edit-list-item input[type="text"]');
+            const ingItems = document.querySelectorAll('#edit-ingredientes-list .edit-list-item textarea');
             const ingredientes = [];
             ingItems.forEach(inp => ingredientes.push(inp.value));
 
@@ -1611,7 +1824,7 @@
             rerenderEditList('ingredientes', data.ingredientes);
             // Focus the new input
             setTimeout(() => {
-                const inputs = document.querySelectorAll('#edit-ingredientes-list .edit-list-item input[type="text"]');
+                const inputs = document.querySelectorAll('#edit-ingredientes-list .edit-list-item textarea');
                 if (inputs.length > 0) inputs[inputs.length - 1].focus();
             }, 50);
         }
@@ -1647,7 +1860,7 @@
 
         // --- Get raw form data (including blanks) ---
         function getEditFormDataRaw() {
-            const ingItems = document.querySelectorAll('#edit-ingredientes-list .edit-list-item input[type="text"]');
+            const ingItems = document.querySelectorAll('#edit-ingredientes-list .edit-list-item textarea');
             const ingredientes = [];
             ingItems.forEach(inp => ingredientes.push(inp.value));
 
@@ -1662,6 +1875,7 @@
             if (type === 'ingredientes') {
                 const container = document.getElementById('edit-ingredientes-list');
                 container.innerHTML = arr.map((v, i) => renderEditIngredientItem(v, i, arr.length)).join("");
+                container.querySelectorAll('textarea').forEach(autoResize);
             } else {
                 const container = document.getElementById('edit-passos-list');
                 container.innerHTML = arr.map((v, i) => renderEditStepItem(v, i, arr.length)).join("");
@@ -1703,6 +1917,7 @@
                 document.getElementById("edit-screen").style.display = "none";
                 document.getElementById("detail-screen").style.display = "flex";
                 renderRecipeDetail(editingRecipeId);
+                syncWakeLock();
                 showToast("✅ Receita salva!");
             } else {
                 // Create new
@@ -1738,6 +1953,7 @@
                 // Was editing — go back to detail
                 document.getElementById("detail-screen").style.display = "flex";
                 renderRecipeDetail(editingRecipeId);
+                syncWakeLock();
             } else {
                 // Was creating — go home
                 goHome();
@@ -1746,19 +1962,29 @@
 
         // --- Delete ---
         function deleteRecipe() {
-            if (!confirm("Tem certeza que deseja excluir esta receita? Esta ação não pode ser desfeita.")) {
-                return;
-            }
             const idx = receitas.findIndex(r => r.id === editingRecipeId || r.id == editingRecipeId);
-            if (idx !== -1) {
-                // Remove check data too
-                localStorage.removeItem(`recipe_${receitas[idx].id}_ingredients`);
-                localStorage.removeItem(`recipe_${receitas[idx].id}_steps`);
-                receitas.splice(idx, 1);
-                saveReceitas(receitas);
-            }
+            if (idx === -1) { goHome(); return; }
+
+            const removed = receitas[idx];
+            const checkKeys = [`recipe_${removed.id}_ingredients`, `recipe_${removed.id}_steps`];
+            const savedChecks = checkKeys.map(k => localStorage.getItem(k));
+
+            // Remove check data too
+            checkKeys.forEach(k => localStorage.removeItem(k));
+            receitas.splice(idx, 1);
+            saveReceitas(receitas);
             goHome();
-            showToast("🗑️ Receita excluída.");
+
+            showToast("🗑️ Receita excluída", 6000, {
+                label: "Desfazer",
+                fn: () => {
+                    receitas.splice(Math.min(idx, receitas.length), 0, removed);
+                    saveReceitas(receitas);
+                    checkKeys.forEach((k, i) => { if (savedChecks[i]) localStorage.setItem(k, savedChecks[i]); });
+                    renderHomeGrid();
+                    showToast("✅ Receita restaurada");
+                }
+            });
         }
 
         // =============================================

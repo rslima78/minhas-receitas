@@ -52,9 +52,15 @@ O aplicativo utiliza uma lógica resiliente e progressiva para carregar os dados
   - Abas (Tabs) persistentes (Ingredientes e Modo de preparo).
   - Listas Clicáveis (Checklists dinâmicas via LocalStorage).
   - Temporizador (Timer) embutido no topo da tela de preparo (Faz apitos programáveis de término via Web Audio API, sem mp3 ou som estático gravado).
-  - Copiar para Área de Transferência da "lista de itens faltando" dos ingredientes de uma receita com formatação.
+  - Copiar para Área de Transferência da "lista de itens faltando" dos ingredientes de uma receita com formatação (botão fixo no rodapé, fora da área rolável).
+  - Imagem de capa no topo da receita (oculta se não houver imagem ou se ela falhar ao carregar).
+  - Barra de progresso da aba atual (`updateProgress()`), atualizada a cada marcação.
+  - Tela sempre acesa enquanto a receita está aberta (Wake Lock API, via `syncWakeLock()`; exige HTTPS e falha em silêncio se não houver suporte).
+  - "Desmarcar tudo", "Reiniciar receita" e "Excluir receita" não pedem confirmação: a ação é feita e um toast oferece **Desfazer** (`showToast(msg, duração, {label, fn})`).
+- **Paleta de cores:** o laranja (`--primary`) fica reservado para as ações principais (copiar lista, "+", iniciar timer, salvar, aba ativa, checkboxes). Cabeçalhos e botões secundários usam `--surface`, `--border` e `--muted`.
 - **Tela de Edição (CRUD):**
   - Permite alterar Emojis (representação visual), Nome, e Arrays de Passos/Ingredientes com capacidade de mover pra cima/trás e deleção de passos e total da receita.
+  - Ingredientes e passos são `textarea` que crescem com o texto. As setas ↑↓ só aparecem com o botão "↕ Reordenar" ligado (classe `.reordering` na lista). Enter num ingrediente cria o próximo.
 
 ---
 
